@@ -20,7 +20,7 @@ public class Office {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "office_number", nullable = false)
     private Integer number;
 
     @Column(name = "location", nullable = false)
