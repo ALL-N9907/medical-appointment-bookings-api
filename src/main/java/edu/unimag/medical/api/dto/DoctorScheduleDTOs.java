@@ -1,4 +1,4 @@
-package edu.unimag.medical.domain.dto;
+package edu.unimag.medical.api.dto;
 
 
 import jakarta.validation.constraints.NotNull;
