@@ -4,7 +4,9 @@ import edu.unimag.medical.domain.enums.OfficeStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -31,6 +33,6 @@ public class Office {
     private OfficeStatus officeStatus;
 
     @OneToMany(mappedBy = "office", fetch = FetchType.LAZY)
-    private List<Appointment> appointments;
+    private Set<Appointment> appointments = new HashSet<>();
 
 }
