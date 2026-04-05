@@ -29,7 +29,7 @@ public class DoctorSchedule {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "day_week" , nullable = false)
-    private DayOfWeek dayWeek;
+    private DayOfWeek dayOfWeek;
 
     @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id", nullable = false) private Doctor doctor;
