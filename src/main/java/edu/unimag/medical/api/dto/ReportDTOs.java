@@ -3,7 +3,7 @@ package edu.unimag.medical.api.dto;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class ReportDTO {
+public class ReportDTOs {
 
     public record OfficeOccupancyResponse(UUID officeId, String officeName, Long appointmentCount) implements Serializable {}
     public record DoctorProductivityResponse(UUID doctorId, String doctorName, Long completedAppointmentCount) implements Serializable{}
