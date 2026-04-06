@@ -12,7 +12,7 @@ import java.util.UUID;
 public class AppointmentDTOs {
     public record CreateAppointmentRequest(
             @NotNull UUID patientId, @NotNull UUID doctorId,
-            @NotNull UUID officeId, @NotNull UUID appointmenttTypeId,
+            @NotNull UUID officeId, @NotNull UUID appointmentTypeId,
             @NotNull LocalTime startAt, @NotNull LocalDate date
             ) implements Serializable{}
 

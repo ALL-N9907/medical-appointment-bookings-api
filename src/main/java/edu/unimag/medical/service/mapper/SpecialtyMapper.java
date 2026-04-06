@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SpecialtyMapper {
-    public static Specialty toEntity(SpecialtyDTOs.CreateSpecialtyRequest req){
+    public Specialty toEntity(SpecialtyDTOs.CreateSpecialtyRequest req){
         return Specialty.builder().name(req.name()).build();
     }
 
-    public static SpecialtyDTOs.SpecialtyResponse toResponse(Specialty s){
+    public SpecialtyDTOs.SpecialtyResponse toResponse(Specialty s){
         return new SpecialtyDTOs.SpecialtyResponse(s.getId(), s.getName());
     }
 

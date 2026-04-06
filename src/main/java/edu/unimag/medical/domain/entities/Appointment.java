@@ -6,7 +6,6 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.UUID;
 
 @Entity
@@ -27,10 +26,10 @@ public class Appointment {
     private AppointmentStatus appointmentStatus;
 
     @Column(name = "start_at", nullable = false)
-    private LocalTime startAt;
+    private LocalDateTime startAt;
 
     @Column(name = "end_at", nullable = false)
-    private LocalTime endAt;
+    private LocalDateTime endAt;
 
     @Column(name = "date", nullable = false)
     private LocalDate date;

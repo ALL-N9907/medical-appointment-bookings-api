@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class DoctorMapper {
 
-    public static Doctor toEntity(DoctorDTOs.CreateDoctorRequest req, Specialty specialty) {
+    public Doctor toEntity(DoctorDTOs.CreateDoctorRequest req, Specialty specialty) {
         return Doctor.builder().fullName(req.fullName()).active(true).specialty(specialty).build();
     }
 
-    public static DoctorDTOs.DoctorResponse toResponse(Doctor d){
+    public DoctorDTOs.DoctorResponse toResponse(Doctor d){
         return new DoctorDTOs.DoctorResponse(d.getId(), d.getFullName(), d.isActive(), d.getSpecialty().getName());
     }
 }

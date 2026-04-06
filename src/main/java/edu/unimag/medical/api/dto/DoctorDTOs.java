@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public class DoctorDTOs {
     public  record CreateDoctorRequest(@NotBlank String fullName, @NotNull UUID specialtyId) implements Serializable{}
-    public  record UpdateDoctorRequest(@NotBlank String fullName, boolean active, @NotNull UUID specialtyId ) implements Serializable{}
+    public  record UpdateDoctorRequest(@NotBlank String fullName, Boolean active, @NotNull UUID specialtyId ) implements Serializable{}
     public record DoctorResponse(UUID id, String fullName, boolean active, String specialtyName) implements Serializable{}
 }

@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public class SpecialtyDTOs {
     public record CreateSpecialtyRequest(@NotBlank String name) implements Serializable{}
-    public record SpecialtyResponse(UUID Id, String name) implements Serializable{}
+    public record SpecialtyResponse(UUID id, String name) implements Serializable{}
 
 }
