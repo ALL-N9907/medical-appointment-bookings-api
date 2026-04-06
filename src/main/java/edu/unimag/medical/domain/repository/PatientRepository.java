@@ -21,4 +21,7 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
     @Query("SELECT COUNT(p) > 0 FROM Patient p WHERE p.email = :email")
     boolean existsByEmail(@Param("email") String email);
+
+    @Query("SELECT COUNT(p) > 0 FROM Patient p WHERE p.phone = :phone")
+    boolean existsByPhone(@Param("phone") String phone);
 }
