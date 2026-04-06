@@ -48,7 +48,9 @@ public class Appointment {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        appointmentStatus = AppointmentStatus.SCHEDULED;
+        if (appointmentStatus == null) {
+            appointmentStatus = AppointmentStatus.SCHEDULED;
+        }
     }
 
     @PreUpdate

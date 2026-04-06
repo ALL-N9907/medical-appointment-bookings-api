@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
-public class AppointmentDTO {
+public class AppointmentDTOs {
     public record CreateAppointmentRequest(
             @NotNull UUID patientId, @NotNull UUID doctorId,
             @NotNull UUID officeId, @NotNull UUID appointmenttTypeId,
@@ -22,7 +22,7 @@ public class AppointmentDTO {
 
     public record AppointmentResponse(
             UUID id, PatientDTOs.PatientResponse patient, DoctorDTOs.DoctorResponse doctor,
-            OfficeDTOs.OfficeResponse office, AppointmentTypeDTO.AppointmentTypeResponse appointmentType, LocalTime startAt, LocalTime endAt
-            ,LocalDate date,AppointmentStatus status, String cancellationReason, String observations
+            OfficeDTOs.OfficeResponse office, AppointmentTypeDTOs.AppointmentTypeResponse appointmentType, LocalTime startAt, LocalTime endAt
+            , LocalDate date, AppointmentStatus status, String cancellationReason, String observations
             ) implements Serializable{}
 }
