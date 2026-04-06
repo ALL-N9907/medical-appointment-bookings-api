@@ -6,14 +6,14 @@ import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class AppointmentDTOs {
     public record CreateAppointmentRequest(
             @NotNull UUID patientId, @NotNull UUID doctorId,
             @NotNull UUID officeId, @NotNull UUID appointmentTypeId,
-            @NotNull LocalTime startAt, LocalDate date
+            @NotNull LocalDateTime startAt, LocalDate date
             ) implements Serializable{}
 
     public record CancelAppointmentRequest(@NotBlank String cancellationReason) implements Serializable {}
@@ -22,7 +22,7 @@ public class AppointmentDTOs {
 
     public record AppointmentResponse(
             UUID id, PatientDTOs.PatientResponse patient, DoctorDTOs.DoctorResponse doctor,
-            OfficeDTOs.OfficeResponse office, AppointmentTypeDTOs.AppointmentTypeResponse appointmentType, LocalTime startAt, LocalTime endAt
+            OfficeDTOs.OfficeResponse office, AppointmentTypeDTOs.AppointmentTypeResponse appointmentType, LocalDateTime startAt, LocalDateTime endAt
             , LocalDate date, AppointmentStatus status, String cancellationReason, String observations
             ) implements Serializable{}
 }
