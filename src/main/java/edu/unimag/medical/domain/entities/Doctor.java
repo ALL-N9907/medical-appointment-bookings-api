@@ -3,7 +3,9 @@ package edu.unimag.medical.domain.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -29,8 +31,8 @@ public class Doctor {
     private Specialty specialty;
 
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
-    private List<Appointment> appointments;
+    private Set<Appointment> appointments = new HashSet<>();
 
     @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
-    private List<DoctorSchedule> doctorSchedules;
+    private Set<DoctorSchedule> doctorSchedules = new HashSet<>();
 }
