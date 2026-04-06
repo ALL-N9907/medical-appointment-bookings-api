@@ -12,8 +12,8 @@ import java.util.UUID;
 public class AppointmentDTOs {
     public record CreateAppointmentRequest(
             @NotNull UUID patientId, @NotNull UUID doctorId,
-            @NotNull UUID officeId, @NotNull UUID appointmenttTypeId,
-            @NotNull LocalTime startAt, @NotNull LocalDate date
+            @NotNull UUID officeId, @NotNull UUID appointmentTypeId,
+            @NotNull LocalTime startAt, date @NotNull LocalDate
             ) implements Serializable{}
 
     public record CancelAppointmentRequest(@NotBlank String cancellationReason) implements Serializable {}

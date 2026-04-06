@@ -12,7 +12,7 @@ import java.util.UUID;
 public class PatientDTOs {
 
     public record CreatePatientRequest(@NotBlank String fullName,@NotBlank @Email String email,@NotBlank String phone) implements Serializable{}
-    public record UpdatePatientRequest(@NotBlank String fullName, @Email String email, @NotNull String phone,@NotNull PatientStatus status) implements Serializable{}
+    public record UpdatePatientRequest(@NotBlank String fullName, @NotBlank @Email String email, @NotBlank String phone,@NotNull PatientStatus status) implements Serializable{}
     public record PatientResponse(UUID id, String fullName, String email, String phone, PatientStatus status) implements Serializable{}
 
 }

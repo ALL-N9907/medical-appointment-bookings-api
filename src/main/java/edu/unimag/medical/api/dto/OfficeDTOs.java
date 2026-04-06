@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public class OfficeDTOs {
     public record CreateOfficeRequest(@NotNull Integer number, @NotBlank String location) implements Serializable{}
-    public record UpdateOfficeRequest(@NotNull Integer number, @NotBlank String location, @NotNull OfficeStatus status) implements Serializable{}
+    public record UpdateOfficeRequest(Integer number, String location, @NotNull OfficeStatus status) implements Serializable{}
     public record OfficeResponse(UUID id, Integer number, String location, OfficeStatus status ) implements Serializable{}
 }
