@@ -13,7 +13,7 @@ public class AppointmentDTOs {
     public record CreateAppointmentRequest(
             @NotNull UUID patientId, @NotNull UUID doctorId,
             @NotNull UUID officeId, @NotNull UUID appointmentTypeId,
-            @NotNull LocalTime startAt, date @NotNull LocalDate
+            @NotNull LocalTime startAt, LocalDate date
             ) implements Serializable{}
 
     public record CancelAppointmentRequest(@NotBlank String cancellationReason) implements Serializable {}

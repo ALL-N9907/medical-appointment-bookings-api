@@ -131,7 +131,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new BusinessException("Only SCHEDULED or CONFIRMED appointments can be cancelled");
         }
 
-        appointment.setAppointmentStatus(AppointmentStatus.CANCELED);
+        appointment.setAppointmentStatus(AppointmentStatus.CANCELLED);
         appointment.setCancellationReason(req.cancellationReason());
         return appointmentMapper.toResponse(appointmentRepository.save(appointment));
     }
