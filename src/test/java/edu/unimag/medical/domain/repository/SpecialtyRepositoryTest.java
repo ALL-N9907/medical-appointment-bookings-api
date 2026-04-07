@@ -130,8 +130,8 @@ class SpecialtyRepositoryTest extends AbstractRepositoryIT {
         long generalMedicineCount = specialtyRepository.countActiveDoctorsBySpecialty(generalMedicine.getId());
         assertThat(generalMedicineCount).isEqualTo(1);
 
-        long phychologyCount = specialtyRepository.countActiveDoctorsBySpecialty(psychology.getId());
-        assertThat(phychologyCount).isEqualTo(1);
+        long psychologyCount = specialtyRepository.countActiveDoctorsBySpecialty(psychology.getId());
+        assertThat(psychologyCount).isEqualTo(1);
 
         long physiotherapyCount = specialtyRepository.countActiveDoctorsBySpecialty(physiotherapy.getId());
         assertThat(physiotherapyCount).isEqualTo(1);

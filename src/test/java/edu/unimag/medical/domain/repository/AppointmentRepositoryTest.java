@@ -12,6 +12,7 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
@@ -76,8 +77,8 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
 
         appointment1 = Appointment.builder()
                 .appointmentStatus(AppointmentStatus.SCHEDULED)
-                .startAt(LocalTime.of(10, 0))
-                .endAt(LocalTime.of(10, 30))
+                .startAt(LocalDateTime.of(LocalDate.now(), LocalTime.of(10, 0)))
+                .endAt(LocalDateTime.of(LocalDate.now(), LocalTime.of(10, 30)))
                 .date(LocalDate.now())
                 .patient(patient)
                 .office(office)
@@ -88,8 +89,8 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
 
         appointment2 = Appointment.builder()
                 .appointmentStatus(AppointmentStatus.SCHEDULED)
-                .startAt(LocalTime.of(11, 0))
-                .endAt(LocalTime.of(11, 30))
+                .startAt(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(11, 0)))
+                .endAt(LocalDateTime.of(LocalDate.now().plusDays(1), LocalTime.of(11, 30)))
                 .date(LocalDate.now().plusDays(1))
                 .patient(patient)
                 .office(office)
@@ -100,8 +101,8 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
 
         appointment3 = Appointment.builder()
                 .appointmentStatus(AppointmentStatus.COMPLETED)
-                .startAt(LocalTime.of(9, 0))
-                .endAt(LocalTime.of(9, 30))
+                .startAt(LocalDateTime.of(LocalDate.now().minusDays(3), LocalTime.of(9, 0)))
+                .endAt(LocalDateTime.of(LocalDate.now().minusDays(3), LocalTime.of(9, 30)))
                 .date(LocalDate.now().minusDays(3))
                 .patient(patient)
                 .office(office)
@@ -112,8 +113,8 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
 
         appointment4 = Appointment.builder()
                 .appointmentStatus(AppointmentStatus.CANCELLED)
-                .startAt(LocalTime.of(14, 0))
-                .endAt(LocalTime.of(14, 30))
+                .startAt(LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.of(14, 0)))
+                .endAt(LocalDateTime.of(LocalDate.now().plusDays(2), LocalTime.of(14, 30)))
                 .date(LocalDate.now().plusDays(2))
                 .patient(patient)
                 .office(office)
@@ -179,29 +180,36 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
     @Test
     @DisplayName("Find appointments that are overlapping by office")
     void findOverlappingByOffice() {
-
-
-        List<Appointment> overlapping = appointmentRepository.findOverlappingByOffice(
+        boolean overlapping = appointmentRepository.existsOverlappingForOffice(
                 office.getId(),
                 LocalDate.now(),
-                LocalTime.of(10, 15),
-                LocalTime.of(10, 45)
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(10, 15)),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(10, 45)),
+                List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.COMPLETED)
         );
-        assertThat(overlapping).hasSize(1);
-        assertThat(overlapping.getFirst().getId()).isEqualTo(appointment1.getId());
-        assertThat(overlapping.getFirst().getOffice().getId()).isEqualTo(office.getId());
+
+        assertThat(overlapping).isTrue();
+
     }
 
     @Test
     @DisplayName("Find appointments by doctor id and date")
     void findByDoctor_IdAndDate() {
+
+        List<AppointmentStatus> statuses = List.of(
+                AppointmentStatus.SCHEDULED,
+                AppointmentStatus.COMPLETED,
+                AppointmentStatus.CANCELLED,
+                AppointmentStatus.NO_SHOW
+        );
         List<Appointment> appointments = appointmentRepository.findByDoctor_IdAndDate(
-                doctor.getId(), LocalDate.now()
+                doctor.getId(), LocalDate.now(), statuses
         );
 
         assertThat(appointments).hasSize(1);
-        assertThat(appointments.getFirst().getStartAt()).isEqualTo(LocalTime.of(10, 0));
+        assertThat(appointments.getFirst().getStartAt().toLocalTime()).isEqualTo(LocalTime.of(10, 0));
         assertThat(appointments.getFirst().getDoctor().getId()).isEqualTo(doctor.getId());
+
     }
 
     @Test
@@ -231,18 +239,20 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
     @Test
     @DisplayName("Find CANCELLED and NO-SHOW count by specialty")
     void findCancelledAndNoShowCountBySpecialty() {
-        Appointment noShow1 = Appointment.builder()
+        Appointment noShowAppointment = Appointment.builder()
                 .appointmentStatus(AppointmentStatus.NO_SHOW)
-                .startAt(LocalTime.of(15, 0))
-                .endAt(LocalTime.of(15, 30))
+                .startAt(LocalDateTime.of(LocalDate.now().minusDays(2), LocalTime.of(15, 0)))
+                .endAt(LocalDateTime.of(LocalDate.now().minusDays(2), LocalTime.of(15, 30)))
                 .date(LocalDate.now().minusDays(2))
                 .patient(patient)
                 .office(office)
                 .doctor(doctor)
                 .appointmentType(appointmentType)
-                .observation("First no-show")
+                .observation("No-show appointment")
                 .build();
-        testEntityManager.persist(noShow1);
+
+        testEntityManager.persist(noShowAppointment);
+        testEntityManager.flush();
 
         List<AppointmentStatus> statuses = List.of(
                 AppointmentStatus.CANCELLED,
@@ -250,6 +260,7 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
         );
 
         List<Object[]> result = appointmentRepository.findCancelledAndNoShowCountBySpecialty(statuses);
+
         assertThat(result).isNotEmpty();
 
         Object[] psychologyData = result.stream()
@@ -258,12 +269,9 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
                 .orElse(null);
 
         assertThat(psychologyData).isNotNull();
-        //One NO-SHOW and one CANCELLED
         assertThat((Long) psychologyData[1]).isEqualTo(2);
-
         assertThat(psychologyData[0]).isInstanceOf(UUID.class);
         assertThat(psychologyData[1]).isInstanceOf(Long.class);
-
     }
 
     @Test
@@ -283,20 +291,32 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
     @Test
     @DisplayName("Find appointments where status is NOT-SHOW")
     void findNoShowCountByPatientAndDateRange() {
-
-        Appointment noShowAppointment = Appointment.builder()
+        Appointment noShow1 = Appointment.builder()
                 .appointmentStatus(AppointmentStatus.NO_SHOW)
-                .startAt(LocalTime.of(15, 0))
-                .endAt(LocalTime.of(15, 30))
+                .startAt(LocalDateTime.of(LocalDate.now().minusDays(2), LocalTime.of(15, 0)))
+                .endAt(LocalDateTime.of(LocalDate.now().minusDays(2), LocalTime.of(15, 30)))
                 .date(LocalDate.now().minusDays(2))
                 .patient(patient)
                 .office(office)
                 .doctor(doctor)
                 .appointmentType(appointmentType)
-                .observation("Test no-show")
+                .observation("First no-show")
                 .build();
 
-        testEntityManager.persist(noShowAppointment);
+        Appointment noShow2 = Appointment.builder()
+                .appointmentStatus(AppointmentStatus.NO_SHOW)
+                .startAt(LocalDateTime.of(LocalDate.now().minusDays(4), LocalTime.of(16, 0)))
+                .endAt(LocalDateTime.of(LocalDate.now().minusDays(4), LocalTime.of(16, 30)))
+                .date(LocalDate.now().minusDays(4))
+                .patient(patient)
+                .office(office)
+                .doctor(doctor)
+                .appointmentType(appointmentType)
+                .observation("Second no-show")
+                .build();
+
+        testEntityManager.persist(noShow1);
+        testEntityManager.persist(noShow2);
         testEntityManager.flush();
 
         LocalDate start = LocalDate.now().minusDays(30);
@@ -308,14 +328,66 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
 
         assertThat(noShows).isNotEmpty();
 
-
         Object[] patientNoShowData = noShows.stream()
                 .filter(data -> data[0].equals(patient.getId()))
                 .findFirst()
                 .orElse(null);
 
         assertThat(patientNoShowData).isNotNull();
-        assertThat((Long) patientNoShowData[1]).isGreaterThanOrEqualTo(1);
+        assertThat((Long) patientNoShowData[2]).isGreaterThanOrEqualTo(2);
+        assertThat(patientNoShowData[0]).isInstanceOf(UUID.class);
+        assertThat(patientNoShowData[1]).isInstanceOf(String.class);
+        assertThat(patientNoShowData[2]).isInstanceOf(Long.class);
+    }
+
+    @Test
+    @DisplayName("Find appointments that are overlapping by doctor")
+    void findOverlappingForDoctor() {
+
+        boolean overlapping = appointmentRepository.existsOverlappingForDoctor(
+                doctor.getId(),
+                LocalDate.now(),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(10,15)),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(10,45)),
+                List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.COMPLETED)
+        );
+
+        assertThat(overlapping).isTrue();
+
+        boolean notOverlapping = appointmentRepository.existsOverlappingForDoctor(
+                doctor.getId(),
+                LocalDate.now(),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(15,0)),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(15,30)),
+                List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.COMPLETED)
+        );
+        assertThat(notOverlapping).isFalse();
+
+    }
+
+    @Test
+    @DisplayName("Find appointments that are overlapping by Patient")
+    void findOverlappingForPatient() {
+
+        boolean overlapping = appointmentRepository.existsOverlappingForPatient(
+                patient.getId(),
+                LocalDate.now(),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(10,15)),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(10,45)),
+                List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.COMPLETED)
+        );
+
+        assertThat(overlapping).isTrue();
+
+        boolean notOverlapping = appointmentRepository.existsOverlappingForDoctor(
+                patient.getId(),
+                LocalDate.now(),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(15,0)),
+                LocalDateTime.of(LocalDate.now(), LocalTime.of(15,30)),
+                List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.COMPLETED)
+        );
+
+        assertThat(notOverlapping).isFalse();
 
     }
 

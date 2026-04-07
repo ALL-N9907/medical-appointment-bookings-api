@@ -20,7 +20,7 @@ public interface DoctorScheduleRepository extends JpaRepository <DoctorSchedule,
     @Query("SELECT COUNT(ds) FROM DoctorSchedule ds WHERE ds.doctor.id = :doctorId")
     long countSchedulesByDoctor(@Param("doctorId") UUID doctorId);
 
-    @Query("SELECT COUNT(DISTINCT ds.doctor.id) FROM DoctorSchedule ds WHERE ds.dayWeek = :day")
+    @Query("SELECT COUNT(DISTINCT ds.doctor.id) FROM DoctorSchedule ds WHERE ds.dayOfWeek = :day")
     long countDistinctDoctorsByDay(@Param("day") DayOfWeek day);
 
 

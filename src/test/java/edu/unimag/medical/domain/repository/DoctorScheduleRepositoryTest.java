@@ -13,6 +13,7 @@ import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -87,12 +88,12 @@ class DoctorScheduleRepositoryTest extends AbstractRepositoryIT {
     @Test
     @DisplayName("Find doctor id and day of the week")
     void findByDoctor_IdAndDayOfWeek() {
-        List<DoctorSchedule> schedules = doctorScheduleRepository.findByDoctor_IdAndDayOfWeek(
+        Optional<DoctorSchedule> schedules = doctorScheduleRepository.findByDoctor_IdAndDayOfWeek(
                 doctor1.getId(), DayOfWeek.WEDNESDAY
         );
 
-        assertThat(schedules).hasSize(1);
-        assertThat(schedules.getFirst().getDoctor().getFullName()).isEqualTo("Dr. Sebastian");
+        assertThat(schedules).isPresent();
+        assertThat(schedules.get().getDoctor().getFullName()).isEqualTo("Dr. Sebastian");
     }
 
     @Test

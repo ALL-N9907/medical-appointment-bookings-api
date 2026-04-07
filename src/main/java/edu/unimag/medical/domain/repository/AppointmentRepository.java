@@ -19,10 +19,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
 
     List<Appointment> findByDateBetween(LocalDate start, LocalDate end);
 
-    @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId " +
-            "AND a.date = :date " +
-            "AND a.startAt < :endAt " +
-            "AND a.endAt > :startAt")
+    @Query("SELECT a FROM Appointment a WHERE a.date BETWEEN :start AND :end")
     List<Appointment> findByRange(@Param("start") LocalDate start, @Param("end") LocalDate end);
 
     List<Appointment> findByDoctor_IdAndDate(UUID doctorId, LocalDate date, List<AppointmentStatus> statuses);
