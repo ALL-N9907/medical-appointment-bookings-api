@@ -18,6 +18,7 @@ Medical appointments
 Additionally, it ensures compliance with key business rules such as availability validation, prevention of schedule overlaps, and tracking of appointment statuses (scheduled, confirmed, canceled, completed, or no-show).
 
 ## ER Diagram
+<img width="774" height="416" alt="ER-Diagram" src="https://github.com/user-attachments/assets/c5421350-8b08-45e4-af04-26ef8f2d4cdc" />
 
 ## Business rules
 - The patient must exist and have an `ACTIVE` status.
