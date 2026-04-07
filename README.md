@@ -125,6 +125,8 @@ mvn spring-boot:run
 mvn test
 ```
 
+Work done by Allan Fernandez(ALL-N9907) and Manuel Beleño (Manuel2640)
+
 
 
 
