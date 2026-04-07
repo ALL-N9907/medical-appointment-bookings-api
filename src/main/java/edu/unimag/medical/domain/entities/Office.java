@@ -4,7 +4,9 @@ import edu.unimag.medical.domain.enums.OfficeStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -20,7 +22,7 @@ public class Office {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false)
+    @Column(name = "office_number", nullable = false)
     private Integer number;
 
     @Column(name = "location", nullable = false)
@@ -31,6 +33,6 @@ public class Office {
     private OfficeStatus officeStatus;
 
     @OneToMany(mappedBy = "office", fetch = FetchType.LAZY)
-    private List<Appointment> appointments;
+    private Set<Appointment> appointments = new HashSet<>();
 
 }

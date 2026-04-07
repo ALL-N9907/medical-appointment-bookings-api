@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -35,6 +37,6 @@ public class Patient {
     private PatientStatus patientStatus;
 
     @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
-    private List<Appointment> appointments;
+    private Set<Appointment> appointments = new HashSet<>();
 
 }
