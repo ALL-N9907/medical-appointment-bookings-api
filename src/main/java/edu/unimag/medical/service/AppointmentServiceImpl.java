@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,6 +30,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     private final DoctorScheduleRepository doctorScheduleRepository;
     private final AppointmentRepository appointmentRepository;
     private final AppointmentMapper appointmentMapper;
+    private final DoctorScheduleService doctorScheduleService;
 
     private static final List<AppointmentStatus> ACTIVE_STATUSES =
             List.of(AppointmentStatus.SCHEDULED, AppointmentStatus.CONFIRMED);
@@ -59,18 +59,17 @@ public class AppointmentServiceImpl implements AppointmentService {
         AppointmentType appointmentType = appointmentTypeRepository.findById(req.appointmentTypeId())
                 .orElseThrow(() -> new ResourceNotFoundException("The id "+req.appointmentTypeId()+" of the appointment type, was not found"));
 
-        LocalDateTime appointmentDateTime = LocalDateTime.of(req.date(), req.startAt());
-        if (!appointmentDateTime.isAfter(LocalDateTime.now())){
+        LocalDateTime endAt = req.startAt().plusMinutes(appointmentType.getDurationMinutes());
+        if (!req.startAt().isAfter(LocalDateTime.now())){
             throw new BusinessException("The appointment date and time must be in the future");
         }
 
-        LocalTime endAt = req.startAt().plusMinutes(appointmentType.getDurationMinutes());
         var schedule = doctorScheduleRepository.findByDoctor_IdAndDayOfWeek(
                         doctor.getId(), req.date().getDayOfWeek())
                 .orElseThrow(() -> new BusinessException(
                         "The doctor has no schedule for " + req.date().getDayOfWeek()));
 
-        if (req.startAt().isBefore(schedule.getStartAt()) || endAt.isAfter(schedule.getEndAt())) {
+        if(req.startAt().toLocalTime().isBefore(schedule.getStartAt()) || endAt.toLocalTime().isAfter(schedule.getEndAt())) {
             throw new BusinessException("The appointment is outside the doctor's working hours");
         }
 
@@ -131,7 +130,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             throw new BusinessException("Only SCHEDULED or CONFIRMED appointments can be cancelled");
         }
 
-        appointment.setAppointmentStatus(AppointmentStatus.CANCELED);
+        appointment.setAppointmentStatus(AppointmentStatus.CANCELLED);
         appointment.setCancellationReason(req.cancellationReason());
         return appointmentMapper.toResponse(appointmentRepository.save(appointment));
     }

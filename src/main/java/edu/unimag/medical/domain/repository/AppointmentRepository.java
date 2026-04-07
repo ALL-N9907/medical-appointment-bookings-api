@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
@@ -70,8 +71,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     """)
     boolean existsOverlappingForDoctor(@Param("doctorId") UUID doctorId,
                                        @Param("date") LocalDate date,
-                                       @Param("startAt") LocalTime startAt,
-                                       @Param("endAt") LocalTime endAt,
+                                       @Param("startAt") LocalDateTime startAt,
+                                       @Param("endAt") LocalDateTime endAt,
                                        @Param("statuses") List<AppointmentStatus> statuses);
 
 
@@ -85,8 +86,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     """)
     boolean existsOverlappingForOffice(@Param("officeId") UUID officeId,
                                        @Param("date") LocalDate date,
-                                       @Param("startAt") LocalTime startAt,
-                                       @Param("endAt") LocalTime endAt,
+                                       @Param("startAt") LocalDateTime startAt,
+                                       @Param("endAt") LocalDateTime endAt,
                                        @Param("statuses") List<AppointmentStatus> statuses);
 
 
@@ -101,7 +102,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
     """)
     boolean existsOverlappingForPatient(@Param("patientId") UUID patientId,
                                         @Param("date") LocalDate date,
-                                        @Param("startAt") LocalTime startAt,
-                                        @Param("endAt") LocalTime endAt,
+                                        @Param("startAt") LocalDateTime startAt,
+                                        @Param("endAt") LocalDateTime endAt,
                                         @Param("statuses") List<AppointmentStatus> statuses);
 }
