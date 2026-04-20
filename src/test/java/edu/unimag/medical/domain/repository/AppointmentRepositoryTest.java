@@ -216,8 +216,9 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
     @DisplayName("Calculate office occupancy by date range")
     void findOfficeOccupancyByDateRange() {
 
-        LocalDate start = LocalDate.now().minusDays(1);
-        LocalDate end = LocalDate.now().plusDays(3);
+
+        LocalDateTime start = LocalDate.now().minusDays(1).atStartOfDay();
+        LocalDateTime end   = LocalDate.now().plusDays(3).atTime(LocalTime.MAX);
 
         List<Object[]> occupancy = appointmentRepository.findOfficeOccupancyByDateRange(start, end);
 
@@ -319,8 +320,9 @@ class AppointmentRepositoryTest extends AbstractRepositoryIT {
         testEntityManager.persist(noShow2);
         testEntityManager.flush();
 
-        LocalDate start = LocalDate.now().minusDays(30);
-        LocalDate end = LocalDate.now();
+
+        LocalDateTime start = LocalDate.now().minusDays(1).atStartOfDay();
+        LocalDateTime end   = LocalDate.now().plusDays(3).atTime(LocalTime.MAX);
 
         List<Object[]> noShows = appointmentRepository.findNoShowCountByPatientAndDateRange(
                 AppointmentStatus.NO_SHOW, start, end

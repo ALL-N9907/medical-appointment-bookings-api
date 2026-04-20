@@ -28,7 +28,7 @@ public class DoctorScheduleServiceImpl implements DoctorScheduleService {
 
     @Override
     @Transactional
-    public DoctorScheduleDTOs.DoctorScheduleResponse create(UUID doctorId, DoctorScheduleDTOs.CreateDoctorScheduleRequest req) {
+    public DoctorScheduleDTOs.DoctorScheduleResponse createDoctorSchedule(UUID doctorId, DoctorScheduleDTOs.CreateDoctorScheduleRequest req) {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(
                 () -> new ResourceNotFoundException("the doctor with "+doctorId+" was not found"));
         if(doctorScheduleRepository.existsByDoctor_IdAndDayOfWeek(doctorId, req.dayOfWeek())){

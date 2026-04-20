@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     @Transactional
-    public List<OfficeOccupancyResponse> getOfficeOcupancy(LocalDate from, LocalDate to) {
+    public List<OfficeOccupancyResponse> getOfficeOccupancy(LocalDateTime from, LocalDateTime to) {
         return appointmentRepository.findOfficeOccupancyByDateRange(from, to).stream().map(
                 row -> new OfficeOccupancyResponse(
                         (UUID) row[0],
@@ -44,7 +45,7 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     @Transactional
-    public List<NoShowPatientResponse> getNoShowPatient(LocalDate from, LocalDate to) {
+    public List<NoShowPatientResponse> getNoShowPatient(LocalDateTime from, LocalDateTime to) {
         return appointmentRepository.findNoShowCountByPatientAndDateRange(AppointmentStatus.NO_SHOW, from, to).stream().map(
                 row -> new NoShowPatientResponse(
                         (UUID) row[0],

@@ -28,8 +28,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             "WHERE a.date BETWEEN :from AND :to " +
             "GROUP BY a.office.id, a.office.location")
     List<Object[]> findOfficeOccupancyByDateRange(
-            @Param("from") LocalDate from,
-            @Param("to") LocalDate to
+            @Param("from") LocalDateTime from,
+            @Param("to") LocalDateTime to
     );
 
     @Query("SELECT a.doctor.specialty.id, COUNT(a) FROM Appointment a " +
@@ -54,8 +54,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, UUID> 
             "ORDER BY COUNT(a) DESC")
     List<Object[]> findNoShowCountByPatientAndDateRange(
             @Param("status") AppointmentStatus status,
-            @Param("from") LocalDate from,
-            @Param("to") LocalDate to
+            @Param("from") LocalDateTime from,
+            @Param("to") LocalDateTime to
     );
 
     @Query("""
