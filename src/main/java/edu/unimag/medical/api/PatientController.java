@@ -31,17 +31,32 @@ public class PatientController {
 
     @GetMapping("/{id}")
     public ResponseEntity<PatientResponse> findById(@PathVariable UUID id){
-        return ResponseEntity.ok(patientService.findById(id));
+        try {
+            return ResponseEntity.ok(patientService.findById(id));
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("Patient not found")) {
+                return ResponseEntity.notFound().build();
+            }
+            throw e;
+        }
     }
 
     @GetMapping
     public ResponseEntity<List<PatientResponse>> findAll() { return ResponseEntity.ok(patientService.findAll()); }
 
+
     @PutMapping("/{id}")
     public ResponseEntity<PatientResponse> updatePatient(
             @Valid @RequestBody UpdatePatientRequest req,
             @PathVariable UUID id){
-        return ResponseEntity.ok(patientService.update(id, req));
+        try {
+            return ResponseEntity.ok(patientService.update(id, req));
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("Patient not found")) {
+                return ResponseEntity.notFound().build();
+            }
+            throw e;
+        }
     }
 
 }

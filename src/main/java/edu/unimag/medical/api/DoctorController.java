@@ -4,6 +4,7 @@ import edu.unimag.medical.api.dto.DoctorDTOs.*;
 import edu.unimag.medical.service.DoctorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +22,31 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @PostMapping
-    public ResponseEntity<DoctorResponse> create(
+    public ResponseEntity<? extends Object> create(
             @Valid @RequestBody CreateDoctorRequest req,
             UriComponentsBuilder uriBuilder){
-        var doctorCreated = doctorService.create(req);
-        var location = uriBuilder.path("/api/doctors/{id}").buildAndExpand(doctorCreated.id()).toUri();
-        return ResponseEntity.created(location).body(doctorCreated);
+        try {
+            var doctorCreated = doctorService.create(req);
+            var location = uriBuilder.path("/api/doctors/{id}").buildAndExpand(doctorCreated.id()).toUri();
+            return ResponseEntity.created(location).body(doctorCreated);
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("already exists")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            }
+            throw e;
+        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DoctorResponse> findById(@PathVariable UUID id){
-        return ResponseEntity.ok(doctorService.findById(id));
+        try {
+            return ResponseEntity.ok(doctorService.findById(id));
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("Doctor not found")) {
+                return ResponseEntity.notFound().build();
+            }
+            throw e;
+        }
     }
 
     @GetMapping
@@ -40,10 +55,20 @@ public class DoctorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DoctorResponse> updateDoctor(
+    public ResponseEntity<? extends Object> updateDoctor(
             @Valid @RequestBody UpdateDoctorRequest req,
             @PathVariable UUID id){
-        return ResponseEntity.ok(doctorService.update(id, req));
+        try {
+            return ResponseEntity.ok(doctorService.update(id, req));
+        } catch (RuntimeException e) {
+            if (e.getMessage().contains("Doctor not found")) {
+                return ResponseEntity.notFound().build();
+            }
+            if (e.getMessage().contains("already exists")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            }
+            throw e;
+        }
     }
 
 }
