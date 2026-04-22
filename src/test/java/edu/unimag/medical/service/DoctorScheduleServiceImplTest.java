@@ -23,7 +23,6 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -93,14 +92,14 @@ class DoctorScheduleServiceImplTest {
 
     @Test
     @DisplayName("Create")
-    void create() {
+    void createDoctorSchedule() {
         when(doctorRepository.findById(doctorId)).thenReturn(Optional.of(doctor));
         when(doctorScheduleRepository.existsByDoctor_IdAndDayOfWeek(eq(doctorId), eq(dayOfWeek))).thenReturn(false);
         when(doctorScheduleMapper.toEntity(any(DoctorScheduleDTOs.CreateDoctorScheduleRequest.class), any(Doctor.class))).thenReturn(doctorSchedule);
         when(doctorScheduleRepository.save(any(DoctorSchedule.class))).thenReturn(doctorSchedule);
         when(doctorScheduleMapper.toResponse(any(DoctorSchedule.class))).thenReturn(scheduleResponse);
 
-        DoctorScheduleDTOs.DoctorScheduleResponse response = doctorScheduleService.create(doctorId, createRequest);
+        DoctorScheduleDTOs.DoctorScheduleResponse response = doctorScheduleService.createDoctorSchedule(doctorId, createRequest);
 
         assertNotNull(response);
         assertEquals(scheduleId, response.id());

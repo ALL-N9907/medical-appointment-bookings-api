@@ -2,13 +2,12 @@ package edu.unimag.medical.service;
 
 import edu.unimag.medical.api.dto.ReportDTOs.*;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReportService {
-    List<OfficeOccupancyResponse> getOfficeOcupancy(LocalDate from, LocalDate to);
+    List<OfficeOccupancyResponse> getOfficeOccupancy(LocalDateTime from, LocalDateTime to);
     List<DoctorProductivityResponse> getDoctorProductivity();
-    List<NoShowPatientResponse> getNoShowPatient(LocalDate from, LocalDate to);
+    List<NoShowPatientResponse> getNoShowPatient(LocalDateTime from, LocalDateTime to);
 
 }

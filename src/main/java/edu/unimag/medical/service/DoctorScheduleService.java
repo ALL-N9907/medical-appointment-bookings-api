@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface DoctorScheduleService {
-    DoctorScheduleResponse create(UUID doctorId, DoctorScheduleDTOs.CreateDoctorScheduleRequest req);
+    DoctorScheduleResponse createDoctorSchedule(UUID doctorId, DoctorScheduleDTOs.CreateDoctorScheduleRequest req);
     DoctorScheduleResponse findByDoctorId_AndDayOfWeek(UUID doctorId, DayOfWeek dayOfWeek);
     List<DoctorScheduleResponse> findAll(UUID doctorId);
 
