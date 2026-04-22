@@ -20,12 +20,13 @@ public class AvailabilityController {
 
     @GetMapping("/{doctorId}")
     public ResponseEntity<List<AvailabilitySlotResponse>> getAvailabilitySlot(
-            @PathVariable UUID id,
+            @PathVariable UUID doctorId,
             @RequestParam LocalDate date,
             @RequestParam UUID appointmentTypeId
             ){
-        var slot = availabilityService.getAvailabilitySlot(id, date, appointmentTypeId);
+        var slot = availabilityService.getAvailabilitySlot(doctorId, date, appointmentTypeId);
         return ResponseEntity.ok(slot);
+
     }
 
 }
