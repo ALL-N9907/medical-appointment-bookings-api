@@ -1,9 +1,10 @@
-package edu.unimag.medical.service;
+package edu.unimag.medical.service.impl;
 
 import edu.unimag.medical.api.dto.SpecialtyDTOs;
 import edu.unimag.medical.domain.entities.Specialty;
 import edu.unimag.medical.domain.repository.SpecialtyRepository;
 import edu.unimag.medical.exception.ConflictException;
+import edu.unimag.medical.service.SpecialtyService;
 import edu.unimag.medical.service.mapper.SpecialtyMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

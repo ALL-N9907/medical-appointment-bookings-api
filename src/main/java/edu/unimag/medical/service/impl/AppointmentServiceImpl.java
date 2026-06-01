@@ -1,4 +1,4 @@
-package edu.unimag.medical.service;
+package edu.unimag.medical.service.impl;
 
 import edu.unimag.medical.api.dto.AppointmentDTOs;
 import edu.unimag.medical.api.dto.AppointmentDTOs.*;
@@ -10,13 +10,14 @@ import edu.unimag.medical.domain.repository.*;
 import edu.unimag.medical.exception.BusinessException;
 import edu.unimag.medical.exception.ConflictException;
 import edu.unimag.medical.exception.ResourceNotFoundException;
+import edu.unimag.medical.service.AppointmentService;
+import edu.unimag.medical.service.DoctorScheduleService;
 import edu.unimag.medical.service.mapper.AppointmentMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 

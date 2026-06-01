@@ -8,6 +8,7 @@ import edu.unimag.medical.domain.entities.Specialty;
 import edu.unimag.medical.domain.repository.AppointmentRepository;
 import edu.unimag.medical.domain.repository.AppointmentTypeRepository;
 import edu.unimag.medical.domain.repository.DoctorRepository;
+import edu.unimag.medical.service.impl.AvailabilityServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
