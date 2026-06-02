@@ -6,6 +6,7 @@ import edu.unimag.medical.domain.entities.DoctorSchedule;
 import edu.unimag.medical.domain.entities.Specialty;
 import edu.unimag.medical.domain.repository.DoctorRepository;
 import edu.unimag.medical.domain.repository.DoctorScheduleRepository;
+import edu.unimag.medical.service.impl.DoctorScheduleServiceImpl;
 import edu.unimag.medical.service.mapper.DoctorScheduleMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

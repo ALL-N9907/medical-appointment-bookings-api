@@ -1,4 +1,4 @@
-package edu.unimag.medical.service;
+package edu.unimag.medical.service.impl;
 
 import edu.unimag.medical.api.dto.DoctorDTOs.*;
 import edu.unimag.medical.domain.entities.Doctor;
@@ -6,6 +6,7 @@ import edu.unimag.medical.domain.entities.Specialty;
 import edu.unimag.medical.domain.repository.DoctorRepository;
 import edu.unimag.medical.domain.repository.SpecialtyRepository;
 import edu.unimag.medical.exception.ResourceNotFoundException;
+import edu.unimag.medical.service.DoctorService;
 import edu.unimag.medical.service.mapper.DoctorMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

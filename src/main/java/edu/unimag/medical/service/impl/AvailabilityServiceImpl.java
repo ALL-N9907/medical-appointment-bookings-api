@@ -1,4 +1,4 @@
-package edu.unimag.medical.service;
+package edu.unimag.medical.service.impl;
 
 import edu.unimag.medical.api.dto.AvailabilityDTOs.*;
 import edu.unimag.medical.api.dto.DoctorScheduleDTOs.*;
@@ -10,9 +10,10 @@ import edu.unimag.medical.domain.repository.AppointmentTypeRepository;
 import edu.unimag.medical.domain.repository.DoctorRepository;
 import edu.unimag.medical.exception.BusinessException;
 import edu.unimag.medical.exception.ResourceNotFoundException;
+import edu.unimag.medical.service.AvailabilityService;
+import edu.unimag.medical.service.DoctorScheduleService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,7 +25,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AvailabilityServiceImpl implements AvailabilityService{
+public class AvailabilityServiceImpl implements AvailabilityService {
 
     private final DoctorScheduleService doctorScheduleService;
     private final AppointmentTypeRepository appointmentTypeRepository;

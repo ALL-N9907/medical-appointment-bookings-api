@@ -1,12 +1,12 @@
-package edu.unimag.medical.service;
+package edu.unimag.medical.service.impl;
 
 import edu.unimag.medical.api.dto.AppointmentTypeDTOs;
 import edu.unimag.medical.domain.entities.AppointmentType;
 import edu.unimag.medical.domain.repository.AppointmentTypeRepository;
 import edu.unimag.medical.exception.ConflictException;
+import edu.unimag.medical.service.AppointmentTypeService;
 import edu.unimag.medical.service.mapper.AppointmentTypeMapper;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

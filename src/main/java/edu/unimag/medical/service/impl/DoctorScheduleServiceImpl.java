@@ -1,4 +1,4 @@
-package edu.unimag.medical.service;
+package edu.unimag.medical.service.impl;
 
 
 import edu.unimag.medical.api.dto.DoctorScheduleDTOs;
@@ -9,6 +9,7 @@ import edu.unimag.medical.domain.repository.DoctorRepository;
 import edu.unimag.medical.domain.repository.DoctorScheduleRepository;
 import edu.unimag.medical.exception.ConflictException;
 import edu.unimag.medical.exception.ResourceNotFoundException;
+import edu.unimag.medical.service.DoctorScheduleService;
 import edu.unimag.medical.service.mapper.DoctorScheduleMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

@@ -1,20 +1,20 @@
-package edu.unimag.medical.service;
+package edu.unimag.medical.service.impl;
 
 import edu.unimag.medical.api.dto.ReportDTOs.*;
 import edu.unimag.medical.domain.enums.AppointmentStatus;
 import edu.unimag.medical.domain.repository.AppointmentRepository;
+import edu.unimag.medical.service.ReportService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ReportServiceImpl implements ReportService{
+public class ReportServiceImpl implements ReportService {
 
     private final AppointmentRepository appointmentRepository;
 
